@@ -21,6 +21,11 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
+permissions:
+  id-token: write
+  contents: read
+  attestations: write
+  packages: write
 
 jobs:
   build:
