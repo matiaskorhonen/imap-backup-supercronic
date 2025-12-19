@@ -4,12 +4,12 @@ WORKDIR /supercronic
 
 # Install Supercronic
 ARG TARGETARCH
-ENV SUPERCRONIC_VERSION=v0.2.33
+ENV SUPERCRONIC_VERSION=v0.2.41
 
 RUN apk update && apk add --no-cache curl \
     && case ${TARGETARCH} in \
-         amd64) SUPERCRONIC_SHA1SUM=71b0d58cc53f6bd72cf2f293e09e294b79c666d8 ;; \
-         arm64) SUPERCRONIC_SHA1SUM=d5e02aa760b3d434bc7b991777aa89ef4a503e49 ;; \
+         amd64) SUPERCRONIC_SHA1SUM=f70ad28d0d739a96dc9e2087ae370c257e79b8d7 ;; \
+         arm64) SUPERCRONIC_SHA1SUM=44e10e33e8d98b1d1522f6719f15fb9469786ff0 ;; \
          *) echo "Unsupported architecture: ${TARGETARCH}" && exit 1 ;; \
        esac \
     && curl -fsSLO "https://github.com/aptible/supercronic/releases/download/${SUPERCRONIC_VERSION}/supercronic-linux-${TARGETARCH}" \
