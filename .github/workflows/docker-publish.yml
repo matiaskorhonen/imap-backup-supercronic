@@ -79,6 +79,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Scheduled email account backups using imap-backup and supercronic
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
