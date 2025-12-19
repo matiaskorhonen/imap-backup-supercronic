@@ -1,5 +1,7 @@
 FROM ghcr.io/joeyates/imap-backup:v16.2.0
 
+LABEL org.opencontainers.image.description="Scheduled email account backups using imap-backup and Supercronic"
+
 WORKDIR /supercronic
 
 # Install Supercronic
