@@ -4,6 +4,15 @@ Scheduled email account backups.
 
 Uses the [imap-backup](https://github.com/joeyates/imap-backup) Docker image and adds [supercronic](https://github.com/aptible/supercronic) to it.
 
+## Configuration
+
+The `imap-backup` arguments and the schedule can be configured using environment variables:
+
+* `BACKUP_SCHEDULE`: [supercronic compatible](https://github.com/aptible/supercronic/tree/main/cronexpr) cron schedule. Defaults to `@daily`.
+* `IMAP_BACKUP_ARGS`: `imap-backup` command line arguments. Defaults to `backup --config /data/config.json`
+
+See [crontab.guru](https://crontab.guru) for assistance with cron syntax.
+
 ## Usage
 
 ### Defaults
@@ -30,8 +39,6 @@ services:
 ```
 
 ### Customize the schedule
-
-See [crontab.guru](https://crontab.guru) for assistance with cron syntax.
 
 **Docker**
 
