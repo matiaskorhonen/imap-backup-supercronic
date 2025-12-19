@@ -1,5 +1,7 @@
 FROM ghcr.io/joeyates/imap-backup:v16.2.0
 
+LABEL org.opencontainers.image.description="A cron wrapper for imap-backup, using Supercronic"
+
 WORKDIR /supercronic
 
 # Install Supercronic
