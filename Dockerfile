@@ -2,6 +2,8 @@ FROM ghcr.io/joeyates/imap-backup:v16.2.0
 
 WORKDIR /supercronic
 
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
 # Install Supercronic
 ARG TARGETARCH
 ENV SUPERCRONIC_VERSION=v0.2.41
