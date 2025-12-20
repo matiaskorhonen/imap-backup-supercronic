@@ -36,12 +36,20 @@ jobs:
       digest: ${{ steps.build-and-push.outputs.digest }}
       attestation-id: ${{ steps.attest.outputs.attestation-id }}
       attestation-url: ${{ steps.attest.outputs.attestation-url }}
+      tag-message: ${{ steps.tag.outputs.message }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
+          fetch-tags: true
           persist-credentials: false
+
+      - name: Extract tag message
+        id: tag
+        if: github.ref_type == 'tag'
+        run: |
+          git --no-pager tag -l --format='message=%(contents:subject)' "$GITHUB_REF" >> $GITHUB_OUTPUT
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
@@ -124,10 +132,18 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-tags: true
+
       - name: Create release
         uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         with:
           body: |
+            ${{ needs.build.outputs.tag-message }}
+
             - Image: `${{ needs.build.outputs.image }}`
             - Tag: `${{ github.ref_name }}`
             - Digest: `${{ needs.build.outputs.digest }}`
