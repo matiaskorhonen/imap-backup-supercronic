@@ -24,11 +24,18 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     permissions:
       id-token: write
       contents: read
       attestations: write
       packages: write
+
+    outputs:
+      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      digest: ${{ steps.build-and-push.outputs.digest }}
+      attestation-id: ${{ steps.attest.outputs.attestation-id }}
+      attestation-url: ${{ steps.attest.outputs.attestation-url }}
 
     steps:
       - name: Checkout repository
@@ -99,9 +106,31 @@ jobs:
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
       - name: Generate artifact attestation
+        id: attest
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/attest-build-provenance@v3
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
           push-to-registry: true
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    if: github.ref_type == 'tag'
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create pre-release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        with:
+          body: |
+            - Image: `${{ needs.build.outputs.image }}`
+            - Tag: `${{ github.ref_name }}`
+            - Digest: `${{ needs.build.outputs.digest }}`
+            - Attestation: [`${{ needs.build.outputs.attestation-id }}`](${{ needs.build.outputs.attestation-url }})
+          generate_release_notes: false
+          make_latest: true
