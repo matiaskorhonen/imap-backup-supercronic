@@ -91,3 +91,13 @@ services:
         --server imap.example.com
         --path /data/me_example.com"
 ```
+
+## Versions
+
+The versioning for the images aims to mirror the `imap-backup` versions. In
+other words, imap-backup v16.2.0 is tagged as the `imap-backup-supercronic`
+v16.2.0 image.
+
+Additional fixes that don't change the `imap-backup` version are added as a
+suffix to the version number. For example, v16.2.0.1 contained a Supercronic
+version bump and other minor fixes.
