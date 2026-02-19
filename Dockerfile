@@ -1,4 +1,4 @@
-FROM ghcr.io/joeyates/imap-backup:v16.2.0
+FROM ghcr.io/joeyates/imap-backup:v16.6.0
 
 WORKDIR /supercronic
 
